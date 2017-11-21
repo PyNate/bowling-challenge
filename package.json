@@ -1,0 +1,28 @@
+{
+  "name": "bowling-challenge",
+  "version": "1.0.0",
+  "description": "A coding challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PyNate/bowling-challenge.git"
+  },
+  "author": "Nathan Leonard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PyNate/bowling-challenge/issues"
+  },
+  "homepage": "https://github.com/PyNate/bowling-challenge#readme",
+  "devDependencies": {
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  },
+  "dependencies": {
+      "chai": "^4.1.2",
+      "mocha": "^4.0.1"
+  }
+}

@@ -109,17 +109,6 @@ describe('getBowlingScore validation', () => {
     expect(testError.message).to.equal('invalid frame');
   });
 
-  it('throws an invalid frame error if a bonus spare throw is missing', () => {
-    const testGame = '5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/';
-    let testError;
-    try {
-      getBowlingScore(testGame);
-    } catch (e) {
-      testError = e;
-    }
-    expect(testError.message).to.equal('invalid frame');
-  });
-
   it('throws an invalid frame error if a spare is recorded for the first throw', () => {
     const testGame = '5/ 5/ 5/ /5 5/ 5/ 5/ 5/ 5/ 5/5';
     let testError;

@@ -11,15 +11,15 @@ function getBowlingScore(gameString) {
   if (frames.length < 10) {
     throw new Error(INCOMPLETE_GAME_ERROR);
   }
-  if (frames.length > 12) {
+  if (frames.lenght > 12) {
     throw new Error(INVALID_GAME_ERROR);
   }
   let doubledThrows = 0;
   let tripleNextThrow;
+  let bonusFrames = 0;
 
-  return frames.reduce((total, frameString, index) => {
-    if (!isValidFrame(frameString, index)) {
-      console.log(frameString);
+  const bowlingScore = frames.reduce((total, frameString, index) => {
+    if (!isValidFrame(frameString, index, bonusFrames)) {
       throw new Error(INVALID_FRAME_ERROR);
     }
     const framePins = getFramePins(frameString);
@@ -49,12 +49,17 @@ function getBowlingScore(gameString) {
     if (isSpare(frameString)) {
       doubledThrows += 1;
     }
-    if (isStrike(frameString) && index < 10) {
-      if (doubledThrows) {
-        tripleNextThrow = true;
-        doubledThrows += 1;
-      } else {
-        doubledThrows += 2;
+    if (isStrike(frameString)) {
+      if (index < 10) {
+        if (doubledThrows) {
+          tripleNextThrow = true;
+          doubledThrows += 1;
+        } else {
+          doubledThrows += 2;
+        }
+      }
+      if (index >= 9 && index < 11) {
+        bonusFrames += 1;
       }
     }
 
@@ -65,14 +70,29 @@ function getBowlingScore(gameString) {
 
     return total + framePins + bonusPins;
   }, 0);
+
+  if ((10 + bonusFrames) !== frames.length) {
+    throw new Error(INCOMPLETE_GAME_ERROR);
+  }
+
+  return bowlingScore;
 }
 
-function isValidFrame(frameString, index) {
+function isValidFrame(frameString, index, bonusFrames) {
   if (index < 9) {
     return frameString.match(/^([X]|(\d|[-]){2}|((\d|[-]){1}[/]))$/);
   }
+  if (!bonusFrames && index > 9) {
+    throw new Error(INVALID_GAME_ERROR);
+  }
   if (index === 11) {
+    if (bonusFrames < 2) {
+      throw new Error(INVALID_GAME_ERROR);
+    }
     return frameString.match(/^([X]|(\d|[-]){1})$/);
+  }
+  if (index > 11) {
+    throw new Error(INVALID_GAME_ERROR);
   }
   return frameString.match(/^([X]|(\d|[-]){2}|((\d|[-]){1}[/](\d|[-X])?))$/);
 }

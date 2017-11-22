@@ -2,7 +2,7 @@
   "name": "bowling-challenge",
   "version": "1.0.0",
   "description": "A coding challenge",
-  "main": "index.js",
+  "main": "getBowlingScore.js",
   "scripts": {
     "test": "mocha"
   },

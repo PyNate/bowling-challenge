@@ -30,4 +30,14 @@ describe('getBowlingScore v1', () => {
     const TEST_GAME = '12 3- 4/ 51 X 72 8- X -9 3/-'; // 101
     expect(getBowlingScore(TEST_GAME)).to.equal(101);
   });
+
+  it('can calculate a strike in the 10th frame', () => {
+    const TEST_GAME_2 = '12 3- 4/ 51 X 72 8- X -9 X 9/'; // 111
+    expect(getBowlingScore(TEST_GAME_2)).to.equal(111);
+  });
+
+  it('can calculate two strikes in the 10th frame', () => {
+    const ALMOST_PERFECT_GAME = 'X X X X X X X X X X X 9'; // 299
+    expect(getBowlingScore(ALMOST_PERFECT_GAME)).to.equal(299);
+  });
 });

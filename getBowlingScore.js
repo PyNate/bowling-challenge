@@ -7,10 +7,6 @@ function getBowlingScore(scoreString) {
   let doubledThrows = 0;
   let tripleNextThrow;
   return scores.reduce((total, frameString, index) => {
-    if (index === 10) {
-      doubledThrows = 0;
-      tripleNextThrow = false;
-    }
     let frameScore = getSingleFrameScore(frameString);
     if (tripleNextThrow) {
       frameScore = (frameScore * 2) + getFirstThrow(frameString);
@@ -32,7 +28,7 @@ function getBowlingScore(scoreString) {
     if (isSpare(frameString)) {
       doubledThrows += 1;
     }
-    if (isStrike(frameString)) {
+    if (isStrike(frameString) && index < 10) {
       if (doubledThrows) {
         tripleNextThrow = true;
         doubledThrows += 1;
@@ -40,6 +36,11 @@ function getBowlingScore(scoreString) {
         doubledThrows += 2;
       }
     }
+
+    if (index > 9) {
+      frameScore -= getSingleFrameScore(frameString);
+    }
+
     return total + frameScore;
   }, 0);
 }

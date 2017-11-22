@@ -18,12 +18,12 @@ describe('getBowlingScore v1', () => {
 
   it('can calculate a game with misses', () => {
     const WITH_MISSES = '9- 9- 9- 9- 9- 9- 9- 9- 9- 9-'; // 90
-    expect(getBowlingScore(WITH_MISSES).to.equal(90));
+    expect(getBowlingScore(WITH_MISSES)).to.equal(90);
   });
 
   it('can calculate a game with spares', () => {
     const WITH_SPARES = '5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/5'; // 150
-    expect(getBowlingScore(WITH_SPARES).to.equal(150));
+    expect(getBowlingScore(WITH_SPARES)).to.equal(150);
   });
 
   it('can calculate a game with all types', () => {

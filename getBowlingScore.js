@@ -5,49 +5,78 @@ const MISS = '-';
 function getBowlingScore(scoreString) {
   const scores = scoreString.split(' ');
   let doubledThrows = 0;
-  return scores.reduce((total, frameString) => {
-    let frameScore;
-    if (doubledThrows > 1) {
-      frameScore = getSingleFrameScore(frameString, true, true);
-      doubledThrows -= 2;
-    } else if (doubledThrows === 1) {
-      frameScore = getSingleFrameScore(frameString, true);
+  let tripleNextThrow;
+  return scores.reduce((total, frameString, index) => {
+    if (index === 10) {
+      doubledThrows = 0;
+      tripleNextThrow = false;
+    }
+    let frameScore = getSingleFrameScore(frameString);
+    if (tripleNextThrow) {
+      frameScore = (frameScore * 2) + getFirstThrow(frameString);
+      tripleNextThrow = false;
+      if (!isStrike(frameString)) {
+        doubledThrows -= 1;
+      }
+    } else if (doubledThrows > 1) {
+      frameScore *= 2;
       doubledThrows -= 1;
-    } else {
-      frameScore = getSingleFrameScore(frameString);
+      if (!isStrike(frameString)) {
+        doubledThrows -= 1;
+      }
+    } else if (doubledThrows === 1) {
+      frameScore += getFirstThrow(frameString);
+      doubledThrows -= 1;
     }
 
     if (isSpare(frameString)) {
       doubledThrows += 1;
     }
+    if (isStrike(frameString)) {
+      if (doubledThrows) {
+        tripleNextThrow = true;
+        doubledThrows += 1;
+      } else {
+        doubledThrows += 2;
+      }
+    }
     return total + frameScore;
   }, 0);
 }
 
-function getSingleFrameScore(frameString, doubleFirstThrow, doubleSecondThrow) {
+function getSingleFrameScore(frameString) {
   if (isStrike(frameString)) {
     return 10;
   }
   let frameTotal = 0;
-  return frameString.split('').reduce((total, throwString, index) => {
+  return frameString.split('').reduce((total, throwString) => {
     let throwScore;
     switch (throwString) {
-      case (SPARE):
-        throwScore = 10 - frameTotal;
-        break;
       case (MISS):
         throwScore = 0;
+        break;
+      case (SPARE):
+        throwScore = 10 - frameTotal;
         break;
       default:
         throwScore = parseInt(throwString, 10);
         frameTotal += throwScore;
         break;
     }
-    if ((doubleFirstThrow && index === 0) || (doubleSecondThrow && index === 1)) {
-      return total + (2 * throwScore);
-    }
     return total + throwScore;
   }, 0);
+}
+
+function getFirstThrow(frameString) {
+  if (isStrike(frameString)) {
+    return 10;
+  }
+  const throws = frameString.split('');
+  const firstThrow = throws[0];
+  if (firstThrow === MISS) {
+    return 0;
+  }
+  return parseInt(firstThrow, 10);
 }
 
 function isStrike(frameString) {

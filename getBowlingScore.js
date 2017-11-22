@@ -2,7 +2,7 @@ const { isValidFrame, isValidGameLength } = require('./utils/validation');
 const { STRIKE, SPARE, MISS } = require('./constants/throwConstants');
 const { INVALID_GAME_ERROR, INVALID_FRAME_ERROR } = require('./constants/errorConstants');
 
-function getBowlingScore(gameString) {
+module.exports = function getBowlingScore(gameString) {
   const frames = gameString.split(' ');
   if (!isValidGameLength(frames)) {
     throw new Error(INVALID_GAME_ERROR);
@@ -57,7 +57,7 @@ function getBowlingScore(gameString) {
 
     return total + framePins + bonusPins;
   }, 0);
-}
+};
 
 function getFramePins(frameString) {
   if (isStrike(frameString)) {
@@ -106,5 +106,3 @@ function isStrike(frameString) {
 function isSpare(frameString) {
   return frameString.includes(SPARE);
 }
-
-module.exports = getBowlingScore;

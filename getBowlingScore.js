@@ -2,29 +2,36 @@ const STRIKE = 'X';
 const SPARE = '/';
 const MISS = '-';
 
-function getBowlingScore(scoreString) {
-  const scores = scoreString.split(' ');
+function getBowlingScore(gameString) {
+  const frames = gameString.split(' ');
   let doubledThrows = 0;
   let tripleNextThrow;
-  return scores.reduce((total, frameString, index) => {
-    let frameScore = getSingleFrameScore(frameString);
+
+  return frames.reduce((total, frameString, index) => {
+    const framePins = getFramePins(frameString);
+    let bonusPins = 0;
+
     if (tripleNextThrow) {
-      frameScore = (frameScore * 2) + getFirstThrow(frameString);
+      // first throw tripled, second throw doubled
+      bonusPins = framePins + getFirstThrowPins(frameString);
       tripleNextThrow = false;
       if (!isStrike(frameString)) {
         doubledThrows -= 1;
       }
     } else if (doubledThrows > 1) {
-      frameScore *= 2;
+      // both throws doubled
+      bonusPins = framePins;
       doubledThrows -= 1;
       if (!isStrike(frameString)) {
         doubledThrows -= 1;
       }
     } else if (doubledThrows === 1) {
-      frameScore += getFirstThrow(frameString);
+      // first throw doubled
+      bonusPins = getFirstThrowPins(frameString);
       doubledThrows -= 1;
     }
 
+    // Set flags for following frame
     if (isSpare(frameString)) {
       doubledThrows += 1;
     }
@@ -38,14 +45,15 @@ function getBowlingScore(scoreString) {
     }
 
     if (index > 9) {
-      frameScore -= getSingleFrameScore(frameString);
+      // only bonus pins count for bonus throws
+      return total + bonusPins;
     }
 
-    return total + frameScore;
+    return total + framePins + bonusPins;
   }, 0);
 }
 
-function getSingleFrameScore(frameString) {
+function getFramePins(frameString) {
   if (isStrike(frameString)) {
     return 10;
   }
@@ -68,7 +76,7 @@ function getSingleFrameScore(frameString) {
   }, 0);
 }
 
-function getFirstThrow(frameString) {
+function getFirstThrowPins(frameString) {
   if (isStrike(frameString)) {
     return 10;
   }

@@ -76,7 +76,7 @@ describe('getBowlingScore validation', () => {
     expect(testError.message).to.equal('invalid game');
   });
 
-  it('throws an invalid game error if a character is invalid', () => {
+  it('throws an invalid frame error if a character is invalid', () => {
     const testGame = 'X A X X X X X X X X X X';
     let testError;
     try {
@@ -84,7 +84,7 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid game');
+    expect(testError.message).to.equal('invalid frame');
   });
 
   it('throws an invalid frame error if a frame is incomplete', () => {
@@ -95,7 +95,7 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid frame (5)');
+    expect(testError.message).to.equal('invalid frame');
   });
 
   it('throws an invalid frame error if a frame counts too many pins', () => {
@@ -106,7 +106,7 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid frame (5)');
+    expect(testError.message).to.equal('invalid frame');
   });
 
   it('throws an invalid frame error if a bonus spare throw is missing', () => {
@@ -117,7 +117,7 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid frame (10)');
+    expect(testError.message).to.equal('invalid frame');
   });
 
   it('throws an invalid frame error if a spare is recorded for the first throw', () => {
@@ -128,7 +128,7 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid frame (4)');
+    expect(testError.message).to.equal('invalid frame');
   });
 
   it('throws an invalid frame error if a frame has too many throws', () => {
@@ -139,6 +139,6 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid frame (6)');
+    expect(testError.message).to.equal('invalid frame');
   });
 });

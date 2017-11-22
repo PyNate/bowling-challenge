@@ -2,12 +2,26 @@ const STRIKE = 'X';
 const SPARE = '/';
 const MISS = '-';
 
+const INVALID_GAME_ERROR = 'invalid game';
+const INVALID_FRAME_ERROR = 'invalid frame';
+const INCOMPLETE_GAME_ERROR = 'incomplete game';
+
 function getBowlingScore(gameString) {
   const frames = gameString.split(' ');
+  if (frames.length < 10) {
+    throw new Error(INCOMPLETE_GAME_ERROR);
+  }
+  if (frames.length > 12) {
+    throw new Error(INVALID_GAME_ERROR);
+  }
   let doubledThrows = 0;
   let tripleNextThrow;
 
   return frames.reduce((total, frameString, index) => {
+    if (!isValidFrame(frameString, index)) {
+      console.log(frameString);
+      throw new Error(INVALID_FRAME_ERROR);
+    }
     const framePins = getFramePins(frameString);
     let bonusPins = 0;
 
@@ -53,6 +67,16 @@ function getBowlingScore(gameString) {
   }, 0);
 }
 
+function isValidFrame(frameString, index) {
+  if (index < 9) {
+    return frameString.match(/^([X]|(\d|[-]){2}|((\d|[-]){1}[/]))$/);
+  }
+  if (index === 11) {
+    return frameString.match(/^([X]|(\d|[-]){1})$/);
+  }
+  return frameString.match(/^([X]|(\d|[-]){2}|((\d|[-]){1}[/](\d|[-X])?))$/);
+}
+
 function getFramePins(frameString) {
   if (isStrike(frameString)) {
     return 10;
@@ -72,6 +96,11 @@ function getFramePins(frameString) {
         frameTotal += throwScore;
         break;
     }
+
+    if ((!isSpare(frameString) && frameTotal > 10) || (isSpare(frameString) && frameTotal > 20)) {
+      throw new Error(INVALID_FRAME_ERROR);
+    }
+
     return total + throwScore;
   }, 0);
 }

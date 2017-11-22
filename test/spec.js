@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const getBowlingScore = require('../getBowlingScore');
+const { INVALID_GAME_ERROR, INVALID_FRAME_ERROR } = require('../constants/errorConstants');
 
 describe('getBowlingScore', () => {
   it('should be a function', () => {
@@ -43,7 +44,7 @@ describe('getBowlingScore', () => {
 });
 
 describe('getBowlingScore validation', () => {
-  it('throws an incomplete game error if there are too few frames', () => {
+  it('throws an invalid game error if there are too few frames', () => {
     const testGame = '9- 9- 9- 9- 9- 9-';
     let testError;
     try {
@@ -51,10 +52,10 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('incomplete game');
+    expect(testError.message).to.equal(INVALID_GAME_ERROR);
   });
 
-  it('throws an incomplete game error if bonus throws are missing', () => {
+  it('throws an invalid game error if bonus throws are missing', () => {
     const testGame = 'X X X X X X X X X X X';
     let testError;
     try {
@@ -62,7 +63,7 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('incomplete game');
+    expect(testError.message).to.equal(INVALID_GAME_ERROR);
   });
 
   it('throws an invalid game error if too many frames are submitted', () => {
@@ -73,7 +74,7 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid game');
+    expect(testError.message).to.equal(INVALID_GAME_ERROR);
   });
 
   it('throws an invalid frame error if a character is invalid', () => {
@@ -84,7 +85,7 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid frame');
+    expect(testError.message).to.equal(INVALID_FRAME_ERROR);
   });
 
   it('throws an invalid frame error if a frame is incomplete', () => {
@@ -95,7 +96,7 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid frame');
+    expect(testError.message).to.equal(INVALID_FRAME_ERROR);
   });
 
   it('throws an invalid frame error if a frame counts too many pins', () => {
@@ -106,7 +107,7 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid frame');
+    expect(testError.message).to.equal(INVALID_FRAME_ERROR);
   });
 
   it('throws an invalid frame error if a spare is recorded for the first throw', () => {
@@ -117,7 +118,7 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid frame');
+    expect(testError.message).to.equal(INVALID_FRAME_ERROR);
   });
 
   it('throws an invalid frame error if a frame has too many throws', () => {
@@ -128,6 +129,6 @@ describe('getBowlingScore validation', () => {
     } catch (e) {
       testError = e;
     }
-    expect(testError.message).to.equal('invalid frame');
+    expect(testError.message).to.equal(INVALID_FRAME_ERROR);
   });
 });

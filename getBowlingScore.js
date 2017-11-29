@@ -37,6 +37,7 @@ module.exports = function getBowlingScore(gameString) {
       doubledThrows -= 1;
     }
 
+
     // Set flags for following frame
     if (isSpare(frameString)) {
       doubledThrows += 1;
@@ -44,7 +45,6 @@ module.exports = function getBowlingScore(gameString) {
     if (isStrike(frameString) && index < 10) {
       if (doubledThrows) {
         tripleNextThrow = true;
-        doubledThrows += 1;
       } else {
         doubledThrows += 2;
       }

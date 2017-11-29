@@ -41,6 +41,16 @@ describe('getBowlingScore', () => {
     const testGame = 'X X X X X X X X X X X 9'; // 299
     expect(getBowlingScore(testGame)).to.equal(299);
   });
+
+  it('can calculate a game ending with three strikes and a 9', () => {
+    const testGame = 'X X 7/ 81 X X 8/ 71 X X X 9'; // 206
+    expect(getBowlingScore(testGame)).to.equal(206);
+  });
+
+  it('can calculate a turkey and two spares in a row', () => {
+    const testGame ='6/ X X X 63 9/ 9/ X X -6';
+    expect(getBowlingScore(testGame)).to.equal(185);
+  });
 });
 
 describe('getBowlingScore validation', () => {
